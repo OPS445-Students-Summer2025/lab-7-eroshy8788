@@ -10,6 +10,18 @@ class Time:
         self.minute = minute
         self.second = second
 
+    def __str__(self):
+        '''return a string representation for the object self'''
+        return  f'{self.hour:02d}:{self.minute:02d}:{self.second:02d}'
+
+    def __repr__(self):
+        '''return a string representation for the object self'''
+        return  f'{self.hour:02d}.{self.minute:02d}.{self.second:02d}'
+
+    def __add__(self, t2):
+        """return the result by using sum_times() method"""
+        return self.sum_times(t2)
+
     def format_time(self):
         """Return this Time object as a formatted string"""
         return f'{self.hour:02d}:{self.minute:02d}:{self.second:02d}'
@@ -25,7 +37,7 @@ class Time:
     def change_time(self, seconds):
         """Change this Time object by adding or subtracting seconds"""
         total_seconds = self.time_to_sec() + seconds
-        t = sec_to_time(total_seconds)
+        t = Time.sec_to_time(total_seconds)
         self.hour = t.hour
         self.minute = t.minute
         self.second = t.second
@@ -34,22 +46,18 @@ class Time:
     def sum_times(self, other):
         """Add this Time object with another Time object"""
         total_seconds = self.time_to_sec() + other.time_to_sec()
-        return sec_to_time(total_seconds)
+        return Time.sec_to_time(total_seconds)
 
     def time_to_sec(self):
         """Convert this Time object to total seconds"""
         return self.hour * 3600 + self.minute * 60 + self.second
 
-    def __str__(self):
-        """Return a nice string when print() is called"""
-        return self.format_time()
-
-
-def sec_to_time(seconds):
-    """Convert total seconds to a Time object"""
-    t = Time()
-    t.hour = seconds // 3600
-    seconds %= 3600
-    t.minute = seconds // 60
-    t.second = seconds % 60
-    return t
+    @staticmethod
+    def sec_to_time(seconds):
+        """Convert total seconds to a Time object"""
+        t = Time()
+        t.hour = seconds // 3600
+        seconds %= 3600
+        t.minute = seconds // 60
+        t.second = seconds % 60
+        return t
